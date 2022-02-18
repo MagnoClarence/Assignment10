@@ -6,6 +6,7 @@ import png # For exporting png files
 from pyqrcode import QRCode
 import datetime # For the date of when the QR code was read
 from datetime import date
+import os
 
 possibleInputs = ["Scan", "SCAN", "scan", "Make", "MAKE", "make"] 
 today = date.today()
@@ -35,11 +36,14 @@ else:
         if cv2.waitKey(1)==ord("q"): # If you want to close the scanner, press "q"
             break
     b = webbrowser.open(str(a))
-
-    
-    text_file = open(str(today)+".txt", "w")
-    n = text_file.write("Data:" + "\n" + str(a) + "\n" + "Date scanned:" + "\n" + str(e))
-    text_file.close()
-    # cap.release(a)
+    txtFileName = (str(today)+".txt")
+    check = os.path.exists(txtFileName)
+    if check is True:
+        textFile = open(txtFileName, "a")
+        n = textFile.write("\n" + "\n" + "Data:" + "\n" + str(a) + "\n" + "Date scanned:" + "\n" + str(e))
+    else:
+        textFile = open(txtFileName, "w")
+        n = textFile.write("Data:" + "\n" + str(a) + "\n" + "Date scanned:" + "\n" + str(e))
+        textFile.close()
     cv2.destroyAllWindows
     
